@@ -1,17 +1,17 @@
 import { Routes, Route } from 'react-router-dom'
 import Dashboard from '../pages/admin/Dashboard'
-import Login from '../pages/admin/Login'
 import AdminLayout from '../components/layout/AdminLayout'
 import ProtectedRoute from '../components/layout/shared/ProtectedRoute'
 import Dealers from '../pages/admin/Dealers'
 import Users from '../pages/admin/users'
 import Vehicles from '../pages/admin/Vehicles'
+import Accessories from '../pages/admin/Accessories'
+import Posts from '../pages/admin/Posts'
 
 
 const AdminRoutes = () => {
 	return (
 		<Routes>
-			<Route path="/admin/login" element={<Login />} />
 
 			<Route path="/admin/dashboard" element={
 				<ProtectedRoute allowedRoles={['admin']}>
@@ -47,6 +47,25 @@ const AdminRoutes = () => {
 					</AdminLayout>
 				</ProtectedRoute>
 			} />
+
+
+			<Route path="/admin/accesorios" element={
+				<ProtectedRoute allowedRoles={['dealer']}>
+					<AdminLayout>
+						<Accessories />
+					</AdminLayout>
+				</ProtectedRoute>
+			} />
+
+
+			<Route path="/admin/publicaciones" element={
+				<ProtectedRoute allowedRoles={['dealer']}>
+					<AdminLayout>
+						<Posts />
+					</AdminLayout>
+				</ProtectedRoute>
+			} />
+
 
 
 

@@ -47,16 +47,18 @@ export const AuthProvider = ({ children }) => {
         setUser(user)
         setRole(user.role)
 
-        if (user.role === 'admin') navigate('/admin/dashboard')
-        else navigate('/admin/mis-autos')
+
     }
+
+
+
 
     const logout = () => {
         localStorage.clear()
         setUser(null)
         setRole(null)
         setToken(null)
-        navigate('/admin/login')
+        navigate('/')
     }
     return (
         <AuthContext.Provider

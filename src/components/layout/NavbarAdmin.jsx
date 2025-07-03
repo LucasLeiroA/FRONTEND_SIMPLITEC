@@ -22,6 +22,7 @@ const NavbarAdmin = () => {
         { label: 'Dashboard', path: '/admin/dashboard' },
         { label: 'Concesionarios', path: '/admin/dealers' },
         { label: 'Usuarios', path: '/admin/users' },
+        { label: 'Eccommerce', path: '/' },
     ]
 
     const menuDealer = [
@@ -29,6 +30,7 @@ const NavbarAdmin = () => {
         { label: 'Accesorios', path: '/admin/accesorios' },
         { label: 'Publicaciones', path: '/admin/publicaciones' },
         { label: 'Usuarios', path: '/admin/users' },
+        { label: 'Eccommerce', path: '/' }
     ]
 
     const handleLogout = () => logout()
@@ -37,9 +39,15 @@ const NavbarAdmin = () => {
     return (
         <AppBar position="static" color="primary" elevation={2}>
             <Toolbar sx={{ justifyContent: 'space-between' }}>
-                {/* Logo o título */}
+
+
                 <Typography variant="h6" fontWeight="bold">
                     SimpliTEC
+                    {!isAdmin && user?.dealer?.name && (
+                        <Box component="span" sx={{ fontWeight: 'medium', ml: 1 }}>
+                            | {user.dealer.name}
+                        </Box>
+                    )}
                 </Typography>
 
                 {/* Menú navegación */}
@@ -60,6 +68,10 @@ const NavbarAdmin = () => {
                             {label}
                         </Button>
                     ))}
+
+
+
+
                 </Stack>
 
                 <Stack direction="row" spacing={2} alignItems="center">
@@ -70,9 +82,6 @@ const NavbarAdmin = () => {
                             </Typography>
                         ) : (
                             <>
-                                <Typography variant="body2" fontWeight="bold">
-                                    {user?.dealer?.name || 'Concesionario'}
-                                </Typography>
                                 <Typography variant="caption">{user?.email}</Typography>
                             </>
                         )}

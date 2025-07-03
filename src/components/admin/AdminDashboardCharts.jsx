@@ -10,7 +10,8 @@ import { getVehiclesByDealerId } from '../../services/vehicleService';
 const AdminDashboardCharts = () => {
     const [loading, setLoading] = useState(true);
     const [dealers, setDealers] = useState([]);
-    const [totalUsers, setTotalUsers] = useState(0);
+    const [dealerUserCount, setDealerUserCount] = useState(0);
+    const [clientCount, setClientCount] = useState(0);
     const [vehiclesByDealer, setVehiclesByDealer] = useState([]);
     const [usersByDealer, setUsersByDealer] = useState([]);
     const theme = useTheme();
@@ -20,8 +21,16 @@ const AdminDashboardCharts = () => {
             try {
                 const dealers = await getAllDealers();
                 const users = await getAllUsers();
+
+                const clientsUser = users.filter(user => user.role === 'client');
+                const dealersUser = users.filter(user => user.role === 'dealer');
+
+
+                setDealerUserCount(dealersUser.length);
+                setClientCount(clientsUser.length);
+
+
                 setDealers(dealers);
-                setTotalUsers(users.length);
 
                 const vehiclesData = await Promise.all(
                     dealers.map(async (dealer) => {
@@ -84,73 +93,86 @@ const AdminDashboardCharts = () => {
     }
 
     return (
-        <Container maxWidth={false} sx={{ py: 4, px: 4, width: '100%', backgroundColor: 'green' }}>
-            <Grid container spacing={4}>
+        <Container maxWidth={false} sx={{ py: 4, px: 4, width: '100%' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', width: '100%' }}>
+                <div style={{ display: 'flex', gap: '2rem', width: '100%' }}>
+                    <div style={{ flex: 1 }}>
+                        <Card>
+                            <CardContent>
+                                <Typography variant="h6">Total de Concesionarios</Typography>
+                                <Typography variant="h3" color="primary" fontWeight={600}>
+                                    {dealers.length}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                        <Card>
+                            <CardContent>
+                                <Typography variant="h6">Total de Usuarios Consesonarios</Typography>
+                                <Typography variant="h3" color="secondary" fontWeight={600}>
+                                    {dealerUserCount}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                        <Card>
+                            <CardContent>
+                                <Typography variant="h6">Total de Usarios</Typography>
+                                <Typography variant="h3" color="secondary" fontWeight={600}>
+                                    {clientCount}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
 
+                <div style={{ display: 'flex', gap: '2rem', width: '100%' }}>
+                    <div style={{ flex: 1 }}>
+                        {renderBarChart('Vehículos por Concesionario', vehiclesByDealer, '#2196f3')}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                        {renderBarChart('Usuarios por Concesionario', usersByDealer, '#4caf50')}
+                    </div>
+                </div>
 
-                <Grid container direction="column" spacing={4}>
-                    <Grid item xs={12} md={6}>
-                        <Grid container direction="row" spacing={4}>
-                            <Grid item>
-                                <Card sx={{ height: '100%' }}>
-                                    <CardContent>
-                                        <Typography variant="h6">Total de Concesionarios</Typography>
-                                        <Typography variant="h3" color="primary" fontWeight={600}>{dealers.length}</Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                            <Grid item>
-                                <Card sx={{ height: '100%' }}>
-                                    <CardContent>
-                                        <Typography variant="h6">Total de Usuarios</Typography>
-                                        <Typography variant="h3" color="secondary" fontWeight={600}>{totalUsers}</Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-
-                    <Grid container>
-                        <Grid container direction="row">
-                            <Grid item xs={12} md={6} sx={{ p: 2 }}>
-                                {renderBarChart('Vehículos por Concesionario', vehiclesByDealer, '#2196f3')}
-                            </Grid>
-                            <Grid item xs={12} md={6} sx={{ p: 2 }}>
-                                {renderBarChart('Usuarios por Concesionario', usersByDealer, '#4caf50')}
-                            </Grid>
-
-                        </Grid>
-                    </Grid>
-                </Grid>
-
-
-                <Grid sx={{ width: '100%' }}>
+                <div>
                     <Card>
                         <CardContent>
                             <Typography variant="h6" gutterBottom>Resumen por Concesionario</Typography>
                             <Divider sx={{ mb: 2 }} />
-                            <Grid container spacing={3}>
+                            <div style={{
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                gap: '1rem',
+                            }}>
                                 {dealers.map((dealer) => {
                                     const vCount = vehiclesByDealer.find(d => d.name === dealer.name)?.count || 0;
                                     const uCount = usersByDealer.find(d => d.name === dealer.name)?.count || 0;
                                     return (
-                                        <Grid item xs={12} sm={6} md={4} key={dealer.id}>
-                                            <Box p={2} border="1px solid #ccc" borderRadius={2} height="100%">
-                                                <Typography fontWeight={600}>{dealer.name}</Typography>
-                                                <Typography variant="body2">ID: {dealer.id}</Typography>
-                                                <Typography variant="body2">Email: {dealer.email}</Typography>
-                                                <Typography variant="body2" color="primary">Vehículos: {vCount}</Typography>
-                                                <Typography variant="body2" color="secondary">Usuarios: {uCount}</Typography>
-                                            </Box>
-                                        </Grid>
+                                        <div key={dealer.id} style={{
+                                            width: '100%',
+                                            maxWidth: '400px',
+                                            border: '1px solid #ccc',
+                                            borderRadius: '8px',
+                                            padding: '1rem',
+                                        }}>
+                                            <Typography fontWeight={600}>{dealer.name}</Typography>
+                                            <Typography variant="body2">ID: {dealer.id}</Typography>
+                                            <Typography variant="body2">Email: {dealer.email}</Typography>
+                                            <Typography variant="body2" color="primary">Vehículos: {vCount}</Typography>
+                                            <Typography variant="body2" color="secondary">Usuarios: {uCount}</Typography>
+                                        </div>
                                     );
                                 })}
-                            </Grid>
+                            </div>
                         </CardContent>
                     </Card>
-                </Grid>
-            </Grid>
+                </div>
+            </div>
         </Container>
+
     );
 };
 
