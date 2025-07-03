@@ -1,0 +1,39 @@
+import { Grid, Typography, Box, CircularProgress } from '@mui/material'
+import VehicleCard from './VehicleCard'
+
+const VehicleGrid = ({ vehicles, loading }) => {
+    if (loading) {
+        return (
+            <Box flex={1} display="flex" alignItems="center" justifyContent="center" minHeight={300}>
+                <CircularProgress size={48} color="primary" />
+            </Box>
+        )
+    }
+
+    if (!vehicles?.length) {
+        return (
+            <Box flex={1} display="flex" alignItems="center" justifyContent="center" minHeight={300}>
+                <Box textAlign="center">
+                    <Typography variant="h6" fontWeight="bold" mb={1}>
+                        No se encontraron vehículos
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Probá modificando los filtros o limpiándolos para ver otras opciones disponibles.
+                    </Typography>
+                </Box>
+            </Box>
+        )
+    }
+
+    return (
+        <Grid container spacing={2} flex={1}>
+            {vehicles.map((vehicle) => (
+                <Grid item key={vehicle.id} xs={12} sm={6} md={4} lg={3}>
+                    <VehicleCard vehicle={vehicle} />
+                </Grid>
+            ))}
+        </Grid>
+    )
+}
+
+export default VehicleGrid

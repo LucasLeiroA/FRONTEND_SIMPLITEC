@@ -1,58 +1,55 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Box, Container } from '@mui/material'
+import FeaturedOffers from '../../components/public/home/FeaturedOffers'
+import FilterSidebar from '../../components/public/home/FilterSidebar'
+import VehicleGrid from '../../components/public/home/VehicleGrid'
+import { getFilteredVehicles } from '../../services/vehicleService'
 import { useDealer } from '../../context/DealerContext'
-import { getVehiclesByDealerId } from '../../services/vehicleService'
-import { Card, CardContent, CardMedia, Typography, Grid, Box } from '@mui/material'
 
 const Home = () => {
 	const { selectedDealer } = useDealer()
+	const [filters, setFilters] = useState({})
 	const [vehicles, setVehicles] = useState([])
+	const [loading, setLoading] = useState(false)
+
 
 	useEffect(() => {
-		const fetchVehicles = async () => {
-			if (selectedDealer) {
-				try {
-					const data = await getVehiclesByDealerId(selectedDealer.id)
-					setVehicles(data)
-				} catch (err) {
-					console.error('Error cargando vehículos:', err)
+		const fetchFiltered = async () => {
+			if (!selectedDealer) return
+			setLoading(true)
+
+			const cleanedFilters = Object.entries(filters).reduce((acc, [key, value]) => {
+				if (
+					(typeof value === 'string' && value.trim() !== '') ||
+					(typeof value === 'number' && !isNaN(value))
+				) {
+					acc[key] = value
 				}
+				return acc
+			}, {})
+
+			try {
+				const data = await getFilteredVehicles(selectedDealer.id, cleanedFilters)
+				setVehicles(data)
+			} catch (err) {
+				console.error('Error al filtrar vehículos:', err)
+			} finally {
+				setLoading(false)
 			}
 		}
 
-		fetchVehicles()
-	}, [selectedDealer])
+		fetchFiltered()
+	}, [filters, selectedDealer])
 
 	return (
-		<Box px={4} py={6}>
-			<Typography variant="h5" fontWeight="bold" mb={4}>
-				Vehículos disponibles en {selectedDealer?.name}
-			</Typography>
-
-			<Grid container spacing={3}>
-				{vehicles.map((vehicle) => (
-					<Grid item key={vehicle.id} xs={12} sm={6} md={4} lg={3}>
-						<Card>
-							<CardMedia
-								component="img"
-								height="160"
-								image={vehicle.images?.[0]?.url || '/placeholder.jpg'}
-								alt={vehicle.model}
-							/>
-							<CardContent>
-								<Typography variant="h6" fontWeight="bold">
-									{vehicle.brand} {vehicle.model}
-								</Typography>
-								<Typography variant="body2">
-									Año: {vehicle.year} | Km: {vehicle.kilometers}
-								</Typography>
-								<Typography variant="subtitle1" color="primary" mt={1}>
-									${vehicle.price}
-								</Typography>
-							</CardContent>
-						</Card>
-					</Grid>
-				))}
-			</Grid>
+		<Box bgcolor="#f9fafb" py={4}>
+			<Container maxWidth="2xl">
+				<FeaturedOffers />
+				<Box mt={4} display="flex" gap={3}>
+					<FilterSidebar onChange={setFilters} />
+					<VehicleGrid vehicles={vehicles} loading={loading} />
+				</Box>
+			</Container>
 		</Box>
 	)
 }

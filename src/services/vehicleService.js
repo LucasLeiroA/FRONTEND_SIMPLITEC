@@ -28,3 +28,10 @@ export const deleteVehicle = async (dealerId, vehicleId) => {
     const res = await defaultApi.delete(`/vehicles/dealers/${dealerId}/${vehicleId}`)
     return res.data
 }
+
+
+export const getFilteredVehicles = async (dealerId, params) => {
+  const res = await defaultApi.get(`/vehicles/dealers/${dealerId}/filter`, { params })
+  return res.data
+}
+
