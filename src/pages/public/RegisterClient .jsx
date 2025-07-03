@@ -24,7 +24,7 @@ const RegisterClient = () => {
 	}
 
 	return (
-		<Box display="flex" alignItems="center" justifyContent="center" minHeight="100vh" bgcolor="#f3f4f6">
+		<div className="flex-1 w-full flex items-center justify-center bg-gradient-to-r from-[#1e3c72] to-[#2a5298] px-4 min-h-[500px]">
 			<Box
 				component="form"
 				onSubmit={handleSubmit}
@@ -34,7 +34,7 @@ const RegisterClient = () => {
 					bgcolor: 'white',
 					p: 4,
 					borderRadius: 2,
-					boxShadow: 3,
+					boxShadow: 4,
 				}}
 			>
 				<Typography variant="h5" align="center" mb={3} fontWeight="bold">
@@ -45,9 +45,11 @@ const RegisterClient = () => {
 				{success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
 
 				<TextField
-					label="Correo"
+					label="Correo electrónico"
 					name="email"
+					type="email"
 					fullWidth
+					required
 					value={form.email}
 					onChange={handleChange}
 					margin="normal"
@@ -57,6 +59,7 @@ const RegisterClient = () => {
 					name="password"
 					type="password"
 					fullWidth
+					required
 					value={form.password}
 					onChange={handleChange}
 					margin="normal"
@@ -72,12 +75,22 @@ const RegisterClient = () => {
 						Iniciar sesión
 					</Button>
 				) : (
-					<Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-						Registrarse
-					</Button>
+					<>
+						<Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
+							Registrarse
+						</Button>
+						<Button
+							variant="text"
+							fullWidth
+							sx={{ mt: 1, color: '#1e3c72' }}
+							onClick={() => navigate('/login')}
+						>
+							Volver al login
+						</Button>
+					</>
 				)}
 			</Box>
-		</Box>
+		</div>
 	)
 }
 

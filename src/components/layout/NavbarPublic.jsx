@@ -18,6 +18,8 @@ import LoginIcon from '@mui/icons-material/Login'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { useState, useEffect } from 'react'
 import { getAllDealers } from '../../services/dealerService'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+
 
 const NavbarPublic = () => {
 	const { user, logout } = useAuth()
@@ -127,6 +129,14 @@ const NavbarPublic = () => {
 
 			{/* DERECHA */}
 			<div className="flex items-center gap-3">
+				<Tooltip title="Favoritos">
+					<IconButton onClick={() => navigate('/favoritos')}>
+						<Badge badgeContent={0} color="error">
+							<FavoriteIcon />
+						</Badge>
+					</IconButton>
+				</Tooltip>
+
 				<Tooltip title="Carrito">
 					<IconButton>
 						<Badge badgeContent={0} color="primary">

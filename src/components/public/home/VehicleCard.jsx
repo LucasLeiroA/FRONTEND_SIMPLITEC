@@ -1,5 +1,12 @@
 import {
-	Card, CardContent, CardMedia, Typography, Box, Stack, Divider, IconButton
+	Card,
+	CardContent,
+	CardMedia,
+	Typography,
+	Box,
+	Stack,
+	Divider,
+	IconButton,
 } from '@mui/material'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
@@ -8,6 +15,7 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { isFavorite, toggleFavoriteId } from '../../../services/favoriteService'
 
 const VehicleCard = ({ vehicle }) => {
@@ -17,19 +25,44 @@ const VehicleCard = ({ vehicle }) => {
 	const downPayment = `$ ${Math.round(price * 0.1).toLocaleString()}`
 
 	const [favorite, setFavorite] = useState(false)
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		setFavorite(isFavorite(id))
 	}, [id])
 
-	const handleToggle = () => {
+	const handleToggleFavorite = (e) => {
+		e.stopPropagation() // Para que no dispare el evento de redirección
 		const updated = toggleFavoriteId(id)
 		setFavorite(updated)
 	}
 
+	const handleNavigate = () => {
+		navigate(`/vehiculo/${id}`)
+	}
+
 	return (
-		<Card sx={{ borderRadius: 2, overflow: 'hidden', boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)', maxWidth: 300 }}>
-			<CardMedia component="img" height="150" image={image} alt={`${brand} ${model}`} />
+		<Card
+			onClick={handleNavigate}
+			sx={{
+				borderRadius: 2,
+				overflow: 'hidden',
+				boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+				maxWidth: 300,
+				cursor: 'pointer',
+				transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+				'&:hover': {
+					transform: 'scale(1.02)',
+					boxShadow: '0px 6px 20px rgba(0,0,0,0.15)',
+				},
+			}}
+		>
+			<CardMedia
+				component="img"
+				height="150"
+				image={image}
+				alt={`${brand} ${model}`}
+			/>
 
 			<CardContent sx={{ p: 2 }}>
 				<Typography variant="body2" color="text.secondary" mb={0.5}>
@@ -40,8 +73,12 @@ const VehicleCard = ({ vehicle }) => {
 					<Typography variant="h6" fontWeight="bold" color="text.primary">
 						{formattedPrice}
 					</Typography>
-					<IconButton onClick={handleToggle} size="small">
-						{favorite ? <FavoriteIcon fontSize="small" color="error" /> : <FavoriteBorderIcon fontSize="small" color="disabled" />}
+					<IconButton onClick={handleToggleFavorite} size="small">
+						{favorite ? (
+							<FavoriteIcon fontSize="small" color="error" />
+						) : (
+							<FavoriteBorderIcon fontSize="small" color="disabled" />
+						)}
 					</IconButton>
 				</Box>
 
