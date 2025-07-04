@@ -32,7 +32,7 @@ const VehicleCard = ({ vehicle }) => {
 	}, [id])
 
 	const handleToggleFavorite = (e) => {
-		e.stopPropagation() // Para que no dispare el evento de redirección
+		e.stopPropagation()
 		const updated = toggleFavoriteId(id)
 		setFavorite(updated)
 	}
@@ -40,6 +40,9 @@ const VehicleCard = ({ vehicle }) => {
 	const handleNavigate = () => {
 		navigate(`/vehiculo/${id}`)
 	}
+
+
+	
 
 	return (
 		<Card

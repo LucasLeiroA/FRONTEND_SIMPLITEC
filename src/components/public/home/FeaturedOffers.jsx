@@ -147,7 +147,7 @@ const FeaturedOffers = () => {
                                 color="primary"
                                 size="large"
                                 sx={{ mt: 3 }}
-                                onClick={() => navigate('/ofertas')}
+                                onClick={() => navigate(`/post/${post.id}`)}
                             >
                                 Conocer oferta
                             </Button>

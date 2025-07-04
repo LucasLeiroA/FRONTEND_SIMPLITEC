@@ -3,9 +3,9 @@ import {
     Box,
     Container,
     Typography,
-    Grid,
     Button,
 } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import VehicleGrid from '../../components/public/home/VehicleGrid'
 import { getFilteredVehicles } from '../../services/vehicleService'
 import { useDealer } from '../../context/DealerContext'
@@ -40,6 +40,15 @@ const FavoriteVehicles = () => {
     return (
         <Box bgcolor="#f9fafb" py={6} minHeight="80vh">
             <Container maxWidth="xl">
+                <Button
+                    startIcon={<ArrowBackIcon />}
+                    variant="outlined"
+                    sx={{ mb: 3 }}
+                    onClick={() => navigate(-1)}
+                >
+                    Volver
+                </Button>
+
                 <Typography
                     variant="h4"
                     fontWeight="bold"
