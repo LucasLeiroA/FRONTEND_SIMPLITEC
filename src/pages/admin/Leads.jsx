@@ -58,6 +58,8 @@ const Leads = () => {
         }
     }
 
+    
+
     return (
         <Box>
             <Typography variant="h5" mb={3}>Cotizaciones recibidas</Typography>
