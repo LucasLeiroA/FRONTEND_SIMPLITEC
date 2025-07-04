@@ -23,7 +23,7 @@ const FavoriteVehicles = () => {
             if (!selectedDealer) return
             setLoading(true)
             try {
-                const allVehicles = await getFilteredVehicles(selectedDealer.id, {})
+                const { vehicles: allVehicles } = await getFilteredVehicles(selectedDealer.id, { limit: 1000 }) // podés aumentar el límite si querés
                 const favIds = getFavoriteIds()
                 const favs = allVehicles.filter(v => favIds.includes(v.id))
                 setVehicles(favs)

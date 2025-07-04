@@ -11,6 +11,9 @@ const Home = () => {
 	const [filters, setFilters] = useState({})
 	const [vehicles, setVehicles] = useState([])
 	const [loading, setLoading] = useState(false)
+	const [page, setPage] = useState(1)
+	const [totalPages, setTotalPages] = useState(1)
+	const limit = 8
 
 
 	useEffect(() => {
@@ -29,8 +32,13 @@ const Home = () => {
 			}, {})
 
 			try {
-				const data = await getFilteredVehicles(selectedDealer.id, cleanedFilters)
-				setVehicles(data)
+				const { vehicles, totalPages } = await getFilteredVehicles(selectedDealer.id, {
+					...cleanedFilters,
+					page,
+					limit,
+				})
+				setVehicles(vehicles)
+				setTotalPages(totalPages)
 			} catch (err) {
 				console.error('Error al filtrar vehículos:', err)
 			} finally {
@@ -39,7 +47,7 @@ const Home = () => {
 		}
 
 		fetchFiltered()
-	}, [filters, selectedDealer])
+	}, [filters, selectedDealer, page])
 
 	return (
 		<Box bgcolor="#f9fafb" py={4}>
@@ -47,7 +55,13 @@ const Home = () => {
 				<FeaturedOffers />
 				<Box mt={4} display="flex" gap={3}>
 					<FilterSidebar onChange={setFilters} />
-					<VehicleGrid vehicles={vehicles} loading={loading} />
+					<VehicleGrid
+						vehicles={vehicles}
+						loading={loading}
+						page={page}
+						setPage={setPage}
+						totalPages={totalPages}
+					/>
 				</Box>
 			</Container>
 		</Box>

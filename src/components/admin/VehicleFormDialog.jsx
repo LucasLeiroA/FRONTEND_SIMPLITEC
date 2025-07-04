@@ -94,7 +94,7 @@ const VehicleFormDialog = ({ open, onClose, onSave, initialData, loading }) => {
             if (img.existing) {
                 const response = await fetch(img.url);
                 const blob = await response.blob();
-                const fileName = img.url.split('/').pop().split('?')[0]; 
+                const fileName = img.url.split('/').pop().split('?')[0];
                 const file = new File([blob], fileName, { type: blob.type });
                 formData.append('images', file);
             } else {

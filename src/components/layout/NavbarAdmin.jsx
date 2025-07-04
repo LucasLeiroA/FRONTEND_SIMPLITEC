@@ -30,6 +30,7 @@ const NavbarAdmin = () => {
         { label: 'Accesorios', path: '/admin/accesorios' },
         { label: 'Publicaciones', path: '/admin/publicaciones' },
         { label: 'Usuarios', path: '/admin/users' },
+        { label: 'Cotizaciones', path: '/admin/cotizaciones' },
         { label: 'Eccommerce', path: '/' }
     ]
 

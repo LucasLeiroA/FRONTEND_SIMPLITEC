@@ -1,7 +1,7 @@
-import { Grid, Typography, Box, CircularProgress } from '@mui/material'
+import { Grid, Typography, Box, CircularProgress, Pagination } from '@mui/material'
 import VehicleCard from './VehicleCard'
 
-const VehicleGrid = ({ vehicles, loading }) => {
+const VehicleGrid = ({ vehicles, loading, page, setPage, totalPages }) => {
     if (loading) {
         return (
             <Box flex={1} display="flex" alignItems="center" justifyContent="center" minHeight={300}>
@@ -26,14 +26,24 @@ const VehicleGrid = ({ vehicles, loading }) => {
     }
 
     return (
-        <Grid container spacing={2} flex={1}>
-            {vehicles.map((vehicle) => (
-                <Grid item key={vehicle.id} xs={12} sm={6} md={4} lg={3}>
-                    <VehicleCard vehicle={vehicle} />
-                </Grid>
-            ))}
-        </Grid>
+        <Box flex={1} minHeight="600px" display="flex" flexDirection="column" justifyContent="space-between">
+            <Grid container spacing={2}>
+                {vehicles.map((vehicle) => (
+                    <Grid item key={vehicle.id} xs={12} sm={6} md={4} lg={3}>
+                        <VehicleCard vehicle={vehicle} />
+                    </Grid>
+                ))}
+            </Grid>
+            <Box mt={4} display="flex" justifyContent="center">
+                <Pagination
+                    count={totalPages}
+                    page={page}
+                    onChange={(_, value) => setPage(value)}
+                    color="primary"
+                />
+            </Box>
+        </Box>
     )
-}
 
+}
 export default VehicleGrid

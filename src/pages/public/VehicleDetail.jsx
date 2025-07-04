@@ -81,7 +81,7 @@ const VehicleDetail = () => {
                     Volver
                 </Button>
 
-                <Grid container spacing={4}>
+                <div className="flex flex-col md:flex-row gap-8">
                     <Grid item xs={12} md={6}>
                         <ImageGallery images={vehicle.images} />
                     </Grid>
@@ -153,7 +153,10 @@ const VehicleDetail = () => {
                         </Box>
 
                     </Grid>
-                </Grid>
+                </div>
+
+
+
             </Container>
 
             <LeadModal open={open} onClose={() => setOpen(false)} vehicleId={vehicle.id} />

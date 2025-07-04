@@ -42,16 +42,19 @@ const VehicleCard = ({ vehicle }) => {
 	}
 
 
-	
+
 
 	return (
 		<Card
 			onClick={handleNavigate}
 			sx={{
+				width: 300,           
+				height: 420,         
+				display: 'flex',
+				flexDirection: 'column',
 				borderRadius: 2,
 				overflow: 'hidden',
 				boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-				maxWidth: 300,
 				cursor: 'pointer',
 				transition: 'transform 0.2s ease, box-shadow 0.2s ease',
 				'&:hover': {
@@ -62,12 +65,24 @@ const VehicleCard = ({ vehicle }) => {
 		>
 			<CardMedia
 				component="img"
-				height="150"
 				image={image}
 				alt={`${brand} ${model}`}
+				sx={{
+					height: 150,
+					width: '100%',
+					objectFit: 'cover',
+				}}
 			/>
 
-			<CardContent sx={{ p: 2 }}>
+			<CardContent
+				sx={{
+					p: 2,
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'space-between',
+					flexGrow: 1,
+				}}
+			>
 				<Typography variant="body2" color="text.secondary" mb={0.5}>
 					Anticipo {downPayment}
 				</Typography>
@@ -111,6 +126,7 @@ const VehicleCard = ({ vehicle }) => {
 				</Stack>
 			</CardContent>
 		</Card>
+
 	)
 }
 

@@ -7,6 +7,7 @@ import Users from '../pages/admin/users'
 import Vehicles from '../pages/admin/Vehicles'
 import Accessories from '../pages/admin/Accessories'
 import Posts from '../pages/admin/Posts'
+import Leads from '../pages/admin/Leads'
 
 
 const AdminRoutes = () => {
@@ -67,7 +68,13 @@ const AdminRoutes = () => {
 			} />
 
 
-
+			<Route path="/admin/cotizaciones" element={
+				<ProtectedRoute allowedRoles={['dealer']}>
+					<AdminLayout>
+						<Leads />
+					</AdminLayout>
+				</ProtectedRoute>
+			} />
 
 		</Routes>
 	)

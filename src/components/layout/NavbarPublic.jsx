@@ -19,7 +19,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { useState, useEffect } from 'react'
 import { getAllDealers } from '../../services/dealerService'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-
+import { useLocation } from 'react-router-dom'
 
 const NavbarPublic = () => {
 	const { user, logout } = useAuth()
@@ -28,6 +28,8 @@ const NavbarPublic = () => {
 	const [dealerMenuAnchor, setDealerMenuAnchor] = useState(null)
 	const [userMenuAnchor, setUserMenuAnchor] = useState(null)
 	const navigate = useNavigate()
+	const location = useLocation()
+
 
 	useEffect(() => {
 		const fetchDealers = async () => {
@@ -119,28 +121,45 @@ const NavbarPublic = () => {
 				)}
 			</div>
 
-			{/* CENTRO */}
-			<nav className="space-x-6 text-[15px] font-medium text-[#1e1e1e]">
-				<Link to="/" className="hover:text-[#3056d3] transition-colors">Inicio</Link>
-				<Link to="/novedades" className="hover:text-[#3056d3] transition-colors">Novedades</Link>
-				<Link to="/ofertas" className="hover:text-[#3056d3] transition-colors">Últimas ofertas</Link>
-				<Link to="/nosotros" className="hover:text-[#3056d3] transition-colors">Sobre nosotros</Link>
-			</nav>
+			<div className="flex items-center gap-6 text-[15px] font-medium text-[#1e1e1e]">
+				<nav className="flex gap-6 text-xl font-semibold">
+					<Link
+						to="/"
+						className={`transition-colors ${location.pathname === '/' ? 'text-[#3056d3]' : 'text-[#1e1e1e] hover:text-[#3056d3]'
+							}`}
+					>
+						Inicio
+					</Link>
+					<Link
+						to="/novedades"
+						className={`transition-colors ${location.pathname.startsWith('/novedades') ? 'text-[#3056d3]' : 'text-[#1e1e1e] hover:text-[#3056d3]'
+							}`}
+					>
+						Novedades
+					</Link>
+					<Link
+						to="/ofertas"
+						className={`transition-colors ${location.pathname.startsWith('/ofertas') ? 'text-[#3056d3]' : 'text-[#1e1e1e] hover:text-[#3056d3]'
+							}`}
+					>
+						Últimas ofertas
+					</Link>
+					<Link
+						to="/nosotros"
+						className={`transition-colors ${location.pathname.startsWith('/nosotros') ? 'text-[#3056d3]' : 'text-[#1e1e1e] hover:text-[#3056d3]'
+							}`}
+					>
+						Sobre nosotros
+					</Link>
+				</nav>
 
-			{/* DERECHA */}
-			<div className="flex items-center gap-3">
+
+				<Box className="h-8 w-[2px] bg-gray-400" />
+
 				<Tooltip title="Favoritos">
 					<IconButton onClick={() => navigate('/favoritos')}>
 						<Badge badgeContent={0} color="error">
 							<FavoriteIcon />
-						</Badge>
-					</IconButton>
-				</Tooltip>
-
-				<Tooltip title="Carrito">
-					<IconButton>
-						<Badge badgeContent={0} color="primary">
-							<ShoppingCartIcon />
 						</Badge>
 					</IconButton>
 				</Tooltip>
@@ -161,13 +180,11 @@ const NavbarPublic = () => {
 								<Typography variant="body2" fontWeight="bold">{user.email}</Typography>
 							</Box>
 							{(user.role === 'admin' || user.role === 'dealer') && (
-								<MenuItem
-									onClick={() => {
-										const target = user.role === 'admin' ? '/admin/dashboard' : '/admin/mis-autos'
-										navigate(target)
-										handleUserMenuClose()
-									}}
-								>
+								<MenuItem onClick={() => {
+									const target = user.role === 'admin' ? '/admin/dashboard' : '/admin/mis-autos'
+									navigate(target)
+									handleUserMenuClose()
+								}}>
 									Ir al Panel
 								</MenuItem>
 							)}
@@ -182,6 +199,7 @@ const NavbarPublic = () => {
 					</Tooltip>
 				)}
 			</div>
+
 		</header>
 
 	)
