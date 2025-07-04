@@ -32,7 +32,7 @@ npm install
 Crear un archivo `.env.local` en la raíz del proyecto:
 
 ```env
-VITE_API_URL=http://localhost:3001/api
+VITE_API_URL=http://localhost:3001
 ```
 
 > 🔐 Asegurate que coincida con la URL del backend.
